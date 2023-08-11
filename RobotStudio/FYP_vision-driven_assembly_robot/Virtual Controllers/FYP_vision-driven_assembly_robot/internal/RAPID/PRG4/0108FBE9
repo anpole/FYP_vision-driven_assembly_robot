@@ -1,0 +1,131 @@
+MODULE Module1
+    PERS string data;
+
+    PERS num cubeM{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num prismM{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num cylinderM{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num bridgeM{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num tprismM{2,4}:=[[0,0,0,0],[1,0,0,0]];
+
+    PERS num cubeM_{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num prismM_{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num cylinderM_{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num bridgeM_{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    PERS num tprismM_{2,4}:=[[0,0,0,0],[1,0,0,0]];
+
+    ! INITIALIZACION, COUNTERS, ...
+    CONST num empty{2,4}:=[[0,0,0,0],[1,0,0,0]];
+    VAR bool ok;
+    VAR num t;
+    VAR string message;
+
+
+    PROC main()
+        IF APAV_updateData=1 THEN
+            data_Conversion;
+            blocks_Detection;
+            IF APAV_hideData=1 THEN
+                write_Data;
+            ENDIF
+            SetDO APAV_updateData,0;
+        ENDIF
+        
+        IF APAV_deleteData=1 THEN
+            delete_Data;
+            SetDo APAV_deleteData,0;
+        ENDIF
+        
+        IF APAV_updatePieces=1 THEN
+            update_Pieces;
+            WaitTime 1;
+            SetDO APAV_updatePieces,0;
+        ENDIF    
+        
+    ENDPROC
+
+    PROC blocks_Detection()
+        IF cubeM{1,1}=1 THEN
+            SetDO APAV_piece_1,1;
+        ENDIF
+        IF prismM{1,1}=2 THEN
+            SetDO APAV_piece_2,1;
+        ENDIF
+        IF cylinderM{1,1}=3 THEN
+            SetDO APAV_piece_3,1;
+        ENDIF
+        IF bridgeM{1,1}=4 THEN
+            SetDO APAV_piece_4,1;
+        ENDIF
+        IF tprismM{1,1}=5 THEN
+            SetDO APAV_piece_5,1;
+        ENDIF
+    ENDPROC
+
+    PROC data_Conversion()
+        ok:=StrToVal(StrPart(data,3,1),t);
+        TEST t
+        CASE 1:
+            ok:=StrToVal(data,cubeM);
+        CASE 2:
+            ok:=StrToVal(data,prismM);
+        CASE 3:
+            ok:=StrToVal(data,cylinderM);
+        CASE 4:
+            ok:=StrToVal(data,bridgeM);
+        CASE 5:
+            ok:=StrToVal(data,tprismM);
+        ENDTEST
+        SetDO APAV_written,1;
+    ENDPROC
+
+    PROC delete_Data()
+        SetDO APAV_piece_1,0;
+        SetDO APAV_piece_2,0;
+        SetDO APAV_piece_3,0;
+        SetDO APAV_piece_4,0;
+        SetDO APAV_piece_5,0;
+        cubeM:=empty;
+        prismM:=empty;
+        cylinderM:=empty;
+        bridgeM:=empty;
+        tprismM:=empty;
+        cubeM_:=empty;
+        prismM_:=empty;
+        cylinderM_:=empty;
+        bridgeM_:=empty;
+        tprismM_:=empty;
+        data:="[[+0.0000,+0.0000,+0.0000,+0.0000],[+0.0000,+0.0000,+0.0000,+0.0000]]";
+        SetDo APAV_deleteData,0;
+    ENDPROC
+
+    PROC update_Pieces()
+        cubeM_:=cubeM;
+        prismM_:=prismM;
+        cylinderM_:=cylinderM;
+        bridgeM_:=bridgeM;
+        tprismM_:=tprismM;
+    ENDPROC
+
+    PROC write_Data()
+        IF APAV_piece_1=1 THEN
+            message:="CUBE: x="+NumToStr(cubeM{1,2},4)+", y="+NumToStr(cubeM{1,3},4)+", rz="+NumToStr(2*ACos(cubeM{2,1}),4)+"°";
+            TPWrite message;
+        ENDIF
+        IF APAV_piece_2=1 THEN
+            message:="PRISM: x="+NumToStr(prismM{1,2},4)+", y="+NumToStr(prismM{1,3},4)+", rz="+NumToStr(2*ACos(prismM{2,1}),4)+"°";
+            TPWrite message;
+        ENDIF
+        IF APAV_piece_3=1 THEN
+            message:="CYLINDER: x="+NumToStr(cylinderM{1,2},4)+", y="+NumToStr(cylinderM{1,3},4)+", rz="+NumToStr(2*ACos(cylinderM{2,1}),4)+"°";
+            TPWrite message;
+        ENDIF
+        IF APAV_piece_4=1 THEN
+            message:="BRIDGE: x="+NumToStr(bridgeM{1,2},4)+", y="+NumToStr(bridgeM{1,3},4)+", rz="+NumToStr(2*ACos(bridgeM{2,1}),4)+"°";
+            TPWrite message;
+        ENDIF
+        IF APAV_piece_5=1 THEN
+            message:="TPRISM: x="+NumToStr(tprismM{1,2},4)+", y="+NumToStr(tprismM{1,3},4)+", rz="+NumToStr(2*ACos(tprismM{2,1}),3)+"°";
+            TPWrite message;
+        ENDIF
+    ENDPROC
+ENDMODULE

@@ -1,0 +1,227 @@
+MODULE MainModule
+    ! ROBOT CAMERA TARGETS
+    CONST robtarget HOME_10:=[[549.70,0.01,257.39],[0.999484,-0.00872895,-7.40654E-05,0.0309136],[0,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget HOME_20:=[[930.56,0.02,55.69],[0.999848,-0.00872839,0.000460763,-0.0150853],[0,-1,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    ! ROBOT PICK TARGETS
+    VAR robtarget PICK_P:=[[0,0,10],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR robtarget PICK_P_:=[[0,0,10],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    ! WORKOBJECT TABLE TARGETS (DEFINED MANUALLY)
+    VAR robtarget TABLE_1:=[[100,100,0],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR robtarget TABLE_2:=[[100,-100,0],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR robtarget TABLE_3:=[[0,-100,0],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    VAR robtarget TABLE_4:=[[0,100,0],[1,0,0,0],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    ! DATA FROM CAMERA
+    PERS string data;
+
+    ! TRANSFORMATION MATRIX FROM CAMERA
+    ! ACTUAL MATRIX
+    PERS num cubeM{2,4}:=[[1,0.1768,0.0886,0],[0.7418,0,0,0.6707]];
+    PERS num prismM{2,4}:=[[2,0.2228,0.2332,0],[0.76,0,0,-0.6499]];
+    PERS num cylinderM{2,4}:=[[3,0.2661,0.1081,0],[1,0,0,0]];
+    PERS num bridgeM{2,4}:=[[4,0.1426,0.3207,0],[0.757,0,0,-0.6534]];
+    PERS num tprismM{2,4}:=[[5,0.1635,0.1747,0],[0.997,0,0,0.0769]];
+
+    ! PREVIOUS MATRIX
+    PERS num cubeM_{2,4}:=[[1,0.1768,0.0886,0],[0.7418,0,0,0.6707]];
+    PERS num prismM_{2,4}:=[[2,0.2228,0.2332,0],[0.76,0,0,-0.6499]];
+    PERS num cylinderM_{2,4}:=[[3,0.2661,0.1081,0],[1,0,0,0]];
+    PERS num bridgeM_{2,4}:=[[4,0.1426,0.3207,0],[0.757,0,0,-0.6534]];
+    PERS num tprismM_{2,4}:=[[5,0.1635,0.1747,0],[0.997,0,0,0.0769]];
+
+    PROC main()
+        !INITIALIZE SIGNALS
+        initilize_signals;
+        
+        !ONCE ARE DEFINED THE TARGETS POINTS
+        SetDO APAV_defineWorkObj,1;
+        WaitDO APAV_defineWorkObj,0;
+
+        !INITIALIZE STATION
+        SetDO APAV_deleteData,1;
+        WaitDo APAV_deleteData,0;
+        SetDO APAV_deletePieces,1;
+        WaitDo APAV_deletePieces,0;
+
+        !THE VIRTUAL PIECES ARE CREATED AT THE ORIGIN OF THE WORK OBJECT
+        SetDO APAV_createPieces,1;
+        WaitDO APAV_piecesCreated,1;
+
+        ! STABLISH SOCKET CONNECTION
+        SetDO APAV_socketConnection,1;
+        WaitDO APAV_socketConnected,1;
+
+        WHILE APAV_socketConnected=1 DO
+
+            rob_pos;
+            WaitDO APAV_robotDone,1;
+            SetDO APAV_updatePieces,1;
+            WaitDO APAV_updatePieces,0;
+
+            SetDO APAV_continuousState,1;
+            WHILE APAV_continuousState=1 DO
+                work_pos;
+                WaitDO APAV_workerDone,1;
+                pick_place;
+            ENDWHILE
+        ENDWHILE
+
+    ENDPROC
+
+    PROC rob_pos()
+        MoveJ HOME_10,v1000,z100,Tooldata_1\WObj:=wobj0;
+        WaitRob \InPos;
+        WaitTime 2;
+        SetDO APAV_workerPos,0;
+        SetDO APAV_robotPos,1;
+    ENDPROC
+
+    PROC work_pos()
+        MoveJ HOME_20,v1000,z100,Tooldata_1\WObj:=wobj0;
+        WaitRob \InPos;
+        WaitTime 2;
+        SetDO APAV_robotPos,0;
+        SetDO APAV_workerPos,1;
+    ENDPROC
+
+    PROC pick_place()
+        SetDO APAV_robotPos,0;
+        SetDO APAV_workerPos,0;
+        SETDO APAV_pickandplace,1;
+        IF APAV_piece_1=1 AND cubeM<>cubeM_ THEN
+            PICK_P:=[[cubeM{1,2}*1000,cubeM{1,3}*1000,cubeM{1,4}*1000],[cubeM{2,1},cubeM{2,2},cubeM{2,3},cubeM{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            PICK_P_:=[[cubeM_{1,2}*1000,cubeM_{1,3}*1000,cubeM_{1,4}*1000],[cubeM_{2,1},cubeM_{2,2},cubeM_{2,3},cubeM_{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P_,0,0,50),v100,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P_,v50,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO pick,1;
+            WaitTime 1;
+            SetDO pick,0;
+            MoveL Offs(PICK_P_,0,0,50),v100,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P,0,0,50),v100,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P,v50,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO place,1;
+            WaitTime 1;
+            SetDO place,0;
+            MoveL Offs(PICK_P,0,0,50),v100,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            cubeM_:=cubeM;
+        ENDIF
+        IF APAV_piece_2=1 AND prismM<>prismM_ THEN
+            PICK_P:=[[prismM{1,2}*1000,prismM{1,3}*1000,prismM{1,4}*1000],[prismM{2,1},prismM{2,2},prismM{2,3},prismM{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            PICK_P_:=[[prismM_{1,2}*1000,prismM_{1,3}*1000,prismM_{1,4}*1000],[prismM_{2,1},prismM_{2,2},prismM_{2,3},prismM_{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P_,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO pick,1;
+            WaitTime 1;
+            SetDO pick,0;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO place,1;
+            WaitTime 1;
+            SetDO place,0;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            prismM_:=prismM;
+        ENDIF
+        IF APAV_piece_3=1 AND cylinderM<>cylinderM_ THEN
+            PICK_P:=[[cylinderM{1,2}*1000,cylinderM{1,3}*1000,cylinderM{1,4}*1000],[cylinderM{2,1},cylinderM{2,2},cylinderM{2,3},cylinderM{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            PICK_P_:=[[cylinderM_{1,2}*1000,cylinderM_{1,3}*1000,cylinderM_{1,4}*1000],[cylinderM_{2,1},cylinderM_{2,2},cylinderM_{2,3},cylinderM_{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P_,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO pick,1;
+            WaitTime 1;
+            SetDO pick,0;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO place,1;
+            WaitTime 1;
+            SetDO place,0;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            cylinderM_:=cylinderM;
+        ENDIF
+        IF APAV_piece_4=1 AND bridgeM<>bridgeM_ THEN
+            PICK_P:=[[bridgeM{1,2}*1000,bridgeM{1,3}*1000,bridgeM{1,4}*1000],[bridgeM{2,1},bridgeM{2,2},bridgeM{2,3},bridgeM{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            PICK_P_:=[[bridgeM_{1,2}*1000,bridgeM_{1,3}*1000,bridgeM_{1,4}*1000],[bridgeM_{2,1},bridgeM_{2,2},bridgeM_{2,3},bridgeM_{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P_,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO pick,1;
+            WaitTime 1;
+            SetDO pick,0;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO place,1;
+            WaitTime 1;
+            SetDO place,0;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            bridgeM_:=bridgeM;
+        ENDIF
+        IF APAV_piece_5=1 AND tprismM<>tprismM_ THEN
+            PICK_P:=[[tprismM{1,2}*1000,tprismM{1,3}*1000,tprismM{1,4}*1000],[tprismM{2,1},tprismM{2,2},tprismM{2,3},tprismM{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            PICK_P_:=[[tprismM_{1,2}*1000,tprismM_{1,3}*1000,tprismM_{1,4}*1000],[tprismM_{2,1},tprismM_{2,2},tprismM_{2,3},tprismM_{2,4}],[-1,0,-1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P_,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO pick,1;
+            WaitTime 1;
+            SetDO pick,0;
+            MoveL Offs(PICK_P_,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P_,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveL PICK_P,v500,fine,Tooldata_1\WObj:=Workobject_1;
+            SetDO place,1;
+            WaitTime 1;
+            SetDO place,0;
+            MoveL Offs(PICK_P,0,0,50),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            MoveJ Offs(PICK_P,0,0,100),v1000,z100,Tooldata_1\WObj:=Workobject_1;
+            tprismM_:=tprismM;
+        ENDIF
+        SetDO APAV_pickandplace,0;
+    ENDPROC
+    
+    PROC initilize_signals()
+        SetDO APAV_continuousState,0;
+        SetDO APAV_createPieces,0;
+        SetDO APAV_defineWorkObj,0;
+        SetDO APAV_deleteData,0;
+        SetDo APAV_deletePieces,0;
+        SetDo APAV_hideData,0;
+        SetDo APAV_pickandplace,0;
+        SetDo APAV_piecePos,0;
+        SetDO APAV_piecesCreated,0;
+        SetDO APAV_piecesDone,0;
+        SetDo APAV_piece_1,0;
+        SetDo APAV_piece_2,0;
+        SetDo APAV_piece_3,0;
+        SetDo APAV_piece_4,0;
+        SetDo APAV_piece_5,0;
+        SetDo APAV_robotDone,0;
+        SetDo APAV_robotPos,0;
+        SetDo APAV_socketConnected,0;
+        SetDO APAV_socketConnection,0;
+        SetDo APAV_updateData,0;
+        SetDo APAV_updatePieces,0;
+        SetDo APAV_workerDone,0;
+        SetDO APAV_workerPos,0;
+        SetDO APAV_written,0;
+    ENDPROC
+ENDMODULE

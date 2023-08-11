@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SystemProperties>
+  <SystemName>FYP_v00</SystemName>
+  <SerialNo>VIRTUAL_CONTROLLER</SerialNo>
+  <UsedMedia>
+    <Media path="C:/Users/anton/AppData/Local/ABB/RobotWare/RobotControl_7.8.2" name="RobotControl" version="7.8.2+234" versionName="7.8.2"/>
+    <Media path="C:/Users/anton/AppData/Local/ABB/RobotWare/RobotOS_7.0.1" name="RobotOS" version="7.0.1+0" versionName="7.0.1"/>
+    <Media path="C:/Users/anton/AppData/Local/ABB/RobotWare/Robots_1.9.1" name="Robots" version="1.9.1+58" versionName="1.9.1"/>
+    <Media path="C:/Users/anton/AppData/Local/ABB/RobotWare/Wizard_1.4.1" name="Wizard" version="1.4.1" versionName="1.4.1"/>
+  </UsedMedia>
+  <ControlModule>
+    <Option descr="RobotControl Base"/>
+    <Option descr="English"/>
+    <Option descr="3120-1 FlexPendant Limited App Package"/>
+    <Option descr="3120-2 FlexPendant Essential App Package"/>
+    <Option descr="3151-1 FlexPendant Program Package"/>
+    <Option descr="Leadthrough"/>
+    <Option descr="3043-3 SafeMove Collaborative"/>
+    <Option descr="Safe Move Plug and Play"/>
+    <Option descr="No Category 0"/>
+    <Option descr="3044-2 Keyless Mode Switch, 2 modes"/>
+    <Option descr="3114-1 Multitasking"/>
+  </ControlModule>
+  <DriveModule>
+    <Name>Robot1</Name>
+    <Option descr="C30-D7 for CRB 15000"/>
+  </DriveModule>
+  <AdditionalOption>
+    <Name>Robots</Name>
+    <Option descr="CRB 15000-5/0.95"/>
+  </AdditionalOption>
+  <AdditionalOption>
+    <Name>Wizard</Name>
+    <Option descr="Wizard"/>
+  </AdditionalOption>
+</SystemProperties>
