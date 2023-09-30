@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{26C08F38-877E-49F6-A950-70C61D2543AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Vision_Assembly</RootNamespace>
+    <AssemblyName>Vision Assembly</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(ProgramFiles)\ABB\RobotStudio 2022\Bin\RobotStudio.exe</StartProgram>
+    <StartArguments>/addin:"C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision_Assembly.rsaddin"</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(ProgramFiles)\ABB\RobotStudio 2022\Bin\RobotStudio.exe</StartProgram>
+    <StartArguments>/addin:"C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Release\Vision_Assembly.rsaddin"</StartArguments>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ABB.Robotics.Controllers.PC, Version=22.3.10098.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\ABB\SDK\PCSDK 2022\ABB.Robotics.Controllers.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="ABB.Robotics.Math">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.Math.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.Controllers">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.Controllers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.Documents">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.Environment">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.Environment.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.Stations">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.Stations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.Stations.Forms">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.Stations.Forms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ABB.Robotics.RobotStudio.UI">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\ABB.Robotics.RobotStudio.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RobotStudio.Resources">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\ABB\SDK\RobotStudio 2022 SDK\RobotStudio.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vision_Assembly.rsaddin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

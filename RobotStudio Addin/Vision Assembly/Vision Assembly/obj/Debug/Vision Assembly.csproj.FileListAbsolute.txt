@@ -1,0 +1,23 @@
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision_Assembly.rsaddin
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision Assembly.dll
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision Assembly.pdb
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.Controllers.PC.dll
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.RobotStudio.Documents.dll
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\RobotStudio.Resources.dll
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.Controllers.PC.xml
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.RobotStudio.Documents.xml
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.AssemblyReference.cache
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.CoreCompileInputs.cache
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.CopyComplete
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.dll
+C:\Users\anton\Desktop\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.pdb
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision_Assembly.rsaddin
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision Assembly.dll
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\Vision Assembly.pdb
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.Controllers.PC.xml
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\bin\Debug\ABB.Robotics.RobotStudio.Documents.xml
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.AssemblyReference.cache
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.CoreCompileInputs.cache
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.csproj.CopyComplete
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.dll
+C:\Users\anton\Desktop\FYP_AlexAntonio\addinpruebas\Vision Assembly\Vision Assembly\obj\Debug\Vision Assembly.pdb
